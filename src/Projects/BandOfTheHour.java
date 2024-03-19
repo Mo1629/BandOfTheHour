@@ -30,7 +30,7 @@ public class BandOfTheHour {
         assignment = new double[rows][];
         for(int i = 0; i < assignment.length; i++){
             char rowLetter = (char)('A' + i);
-            System.out.print("Please enter number of positions in row " + rowLetter);
+            System.out.print("Please enter number of positions in row " + rowLetter + " : ");
             int numPositions = keyboard.nextInt();
             keyboard.nextLine();
             if (numPositions < 1 || numPositions > MAX_POSITIONS) {
@@ -108,25 +108,26 @@ public class BandOfTheHour {
             System.out.print("ERROR: Out of range, try again            : ");
             position = keyboard.nextInt();
         }
+        if (assignment[rowIndex][position - 1] != 0){
+            System.out.println("ERROR: There is already a musician there.");
+            return;
+        }
         System.out.print("Please enter weight (45.0 to 200.0)       : ");
         weight = keyboard.nextDouble();
-        if (weight < MIN_WEIGHT || weight > MAX_WEIGHT) {
+        while (weight < MIN_WEIGHT || weight > MAX_WEIGHT) {
             System.out.print("ERROR: Out of range, try again            : ");
             weight = keyboard.nextDouble();
         }
-        if (assignment[rowIndex][position - 1] != 0){
-            System.out.print("ERROR: There is already a musician there.");
-            return;
-        }
+        assignment[rowIndex][position-1] = weight;
         double rowWeight = 0;
         for (int i = 0; i < assignment[rowIndex].length; i++){
             rowWeight += assignment[rowIndex][i];
         }
         if (rowWeight > assignment[rowIndex].length * 100){
-            System.out.print("ERROR: That would exceed the average weight limit.");
+            System.out.println("ERROR: That would exceed the average weight limit.");
+            assignment[rowIndex][position-1] = 0.0;
             return;
         }
-        assignment[rowIndex][position-1] = weight;
         System.out.println("****** Musician added.");
 
     } // end of the addMusician method
@@ -152,7 +153,7 @@ public class BandOfTheHour {
             position = keyboard.nextInt();
         }
         if (assignment[rowIndex][position - 1] == 0){
-            System.out.print("ERROR: That position is vacant.");
+            System.out.println("ERROR: That position is vacant.");
             return;
         }
         assignment[rowIndex][position-1] = 0.0;
